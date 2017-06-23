@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             String type = name[0].substring(0,1);
             String value = name[0].substring(1);
             Log.i("Card", type + " " + value);
-            Card c = new Card(this, width/7, Integer.parseInt(value), type.charAt(0));
+            Card c = new Card(this,(int) (width/7), Integer.parseInt(value), type.charAt(0));
             deck.add(c);
         }
 
