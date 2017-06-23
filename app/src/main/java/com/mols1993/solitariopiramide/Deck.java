@@ -37,6 +37,9 @@ public class Deck extends android.support.v7.widget.AppCompatImageButton{
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
                     main.drawCard(deckList.get(currentCard));
                     currentCard++;
+                    if(currentCard == deckList.size()){
+                        currentCard = 0;
+                    }
                 }
                 return false;
             }

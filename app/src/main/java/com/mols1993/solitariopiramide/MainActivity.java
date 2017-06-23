@@ -167,6 +167,10 @@ public class MainActivity extends AppCompatActivity {
         return p1;
     }
 
+    public void undo(View v){
+        undo.undo();
+    }
+
     public void checkClickables(){
         for(int i = 0; i < 7; i++){
             for(int j = 0; j < 7; j++){

@@ -1,10 +1,12 @@
 package com.mols1993.solitariopiramide;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
