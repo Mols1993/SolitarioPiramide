@@ -11,8 +11,8 @@ public class Movement {
     public char type1,type2;
 
     public Movement(int n1,int n2, char t1, char t2, int[] p1 , int[] p2){
-        num1=n1;
-        num2=n2;
+        num1 = n1;
+        num2 = n2;
         pos1 = p1;
         pos2 = p2;
         type1 = t1;
