@@ -82,6 +82,15 @@ public class MainActivity extends AppCompatActivity {
             mainLayout.addView(ll);
         }
         checkClickables();
+
+        LinearLayout ll = new LinearLayout(this);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.weight = 0;
+        params.gravity = Gravity.LEFT;
+        ll.setLayoutParams(params);
+        ll.addView(deck.get(30));
+        mainLayout.addView(ll);
     }
 
     public void move(Card c){
