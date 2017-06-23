@@ -5,12 +5,15 @@ import android.graphics.Point;
 import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.ButtonBarLayout;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     Stack<Card> deckPileStack = new Stack<>();
     Card deckPileTop;
     UndoStack undo;
+    TextView txt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +109,24 @@ public class MainActivity extends AppCompatActivity {
         deckPileTop = new Card(this, width/7, 1, 'C');
         deckPileTop.setVisibility(View.INVISIBLE);
         ll.addView(deckPileTop);
+
+        Button btn = new Button(this);
+        btn.setText("Deshacer");
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                undo.undo();
+                updateTop();
+                updateTxt();
+                checkClickables();
+            }
+        });
+        ll.addView(btn);
+
+        txt = new TextView(this);
+        txt.setText("asdasd");
+        ll.addView(txt);
+
         mainLayout.addView(ll);
     }
 
@@ -113,7 +135,12 @@ public class MainActivity extends AppCompatActivity {
         deckPileTop.setVisibility(View.VISIBLE);
         deckPileStack.push(currentCard);
         undo.draw();
+        updateTxt();
         updateTop();
+    }
+
+    public void updateTxt(){
+        txt.setText(String.valueOf(undo.moveStack.size()));
     }
 
     public void updateTop(){
@@ -136,6 +163,10 @@ public class MainActivity extends AppCompatActivity {
                 selected[0].delete();
                 int[] p1 = getPos(selected[0]);
                 undo.deleteCards(selected[0].number, 0, selected[0].type, '0', p1, p1);
+                if(p1[0] == -1){
+                    deckPileStack.pop();
+                    updateTop();
+                }
                 selected[0] = null;
                 checkClickables();
             }
@@ -159,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
             selected[1] = null;
             checkClickables();
         }
+        updateTxt();
     }
 
     public int[] getPos(Card card){
@@ -174,13 +206,23 @@ public class MainActivity extends AppCompatActivity {
         return p1;
     }
 
-    public void undo(View v){
-        undo.undo();
-        updateTop();
-        checkClickables();
+    public boolean checkWin(){
+        for(int i = 0; i < 7; i++){
+            for(int j = 0; j < i + 1; j++){
+                if(board[i][j] != null){
+                    if(board[i][j].getVisibility() == View.VISIBLE){
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     public void checkClickables(){
+        if(checkWin()){
+            //TODO algo para indicar que ganó
+        }
         for(int i = 0; i < 7; i++){
             for(int j = 0; j < 7; j++){
                 if(board[i][j] != null){
