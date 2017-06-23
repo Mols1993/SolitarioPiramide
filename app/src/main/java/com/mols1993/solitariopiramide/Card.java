@@ -1,6 +1,9 @@
 package com.mols1993.solitariopiramide;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -28,7 +31,6 @@ public class Card extends android.support.v7.widget.AppCompatImageButton{
         number = num;
         type = t;
         main = (MainActivity) context;
-        //setText(String.valueOf(number) + String.valueOf(type));
         fileName = "cards/" + type + String.valueOf(num) + ".png";
         Log.i("FileName", fileName);
         try {
@@ -42,6 +44,7 @@ public class Card extends android.support.v7.widget.AppCompatImageButton{
 
     public void clickable(boolean state){
         final Card c = this;
+        c.setAlpha(1f);
 
         if(state){
             setOnTouchListener(new OnTouchListener() {
@@ -50,6 +53,7 @@ public class Card extends android.support.v7.widget.AppCompatImageButton{
                     Card card = c;
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
                         main.move(card);
+                        c.setAlpha(0.8f);
                     }
                     return false;
                 }
@@ -68,5 +72,18 @@ public class Card extends android.support.v7.widget.AppCompatImageButton{
     public void delete(){
         setVisibility(View.INVISIBLE);
         clickable(false);
+        main.updateTop();
+    }
+
+    public void changeCard(Context context, Card card){
+        number = card.number;
+        type = card.type;
+        fileName = card.fileName;
+        try {
+            Drawable d = Drawable.createFromStream(context.getAssets().open(fileName), null);
+            setBackground(d);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

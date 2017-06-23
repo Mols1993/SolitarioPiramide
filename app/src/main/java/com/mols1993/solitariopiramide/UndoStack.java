@@ -1,11 +1,7 @@
 package com.mols1993.solitariopiramide;
 
 import android.content.Context;
-import android.graphics.Point;
-import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
-
 
 
 import java.util.List;
@@ -17,7 +13,7 @@ import java.util.Stack;
 
 public class UndoStack {
     Stack<Movement> moveStack;
-    Stack<Card> laPila;
+    Stack<Card> deckPileStack;
     List<Card> deck;
     Card[][] board;
     Context context;
@@ -26,7 +22,7 @@ public class UndoStack {
     public UndoStack(Card[][] b, Stack<Card> p, List<Card> d, int w){
         moveStack = new Stack<Movement>();
         board = b;
-        laPila = p;
+        deckPileStack = p;
         deck = d;
         width = w;
     }
@@ -44,7 +40,7 @@ public class UndoStack {
             Movement m = moveStack.pop();
             if(m.draw){
                 //cuando se esté implementado el mazo y la pila.
-                deck.add(laPila.pop());
+                deck.add(deckPileStack.pop());
             }
             else{
                 int[] laPilaPos = {-1,-1};
@@ -55,13 +51,13 @@ public class UndoStack {
                             board[m.pos2[0]][m.pos2[1]].setVisibility(View.VISIBLE);
                         }
                         else{
-                            laPila.push(new Card(context,width,m.num2,m.type2));
+                            deckPileStack.push(new Card(context,width,m.num2,m.type2));
                         }
                     }
                 }
                 else{
                     //cuando esté implementada la Pila hay que hacer que el elemento se agre
-                    laPila.push(new Card(context,width,m.num1,m.type1));
+                    deckPileStack.push(new Card(context,width,m.num1,m.type1));
                     if(m.num1!=13){
                         board[m.pos2[0]][m.pos2[1]].setVisibility(View.VISIBLE);
                     }
