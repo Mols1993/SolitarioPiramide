@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         List<String> cardList = new ArrayList<>();
         List<Card> deck = new ArrayList<>();
         List<Card> remainingDeck;
-        undo = new UndoStack(board, deckPileStack, deck, width/7);
+
 
         try {
             Collections.addAll(cardList, getAssets().list("cards"));
@@ -92,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
 
         Deck d = new Deck(this, "cards/BA.png", width/7, remainingDeck);
 
+        undo = new UndoStack(board, deckPileStack, d, width/7,this);
+
         LinearLayout ll = new LinearLayout(this);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -121,6 +123,9 @@ public class MainActivity extends AppCompatActivity {
             deckPileTop.changeCard(this, deckPileStack.peek());
             deckPileTop.clickable(true);
         }
+        else {
+            deckPileTop.setVisibility(View.INVISIBLE);
+        }
     }
 
     public void move(Card c){
@@ -129,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
             Log.i("Move", String.valueOf(c.number));
             if(selected[0].number == 13){
                 selected[0].delete();
+                int[] p1 = getPos(selected[0]);
+                undo.deleteCards(selected[0].number, 0, selected[0].type, '0', p1, p1);
                 selected[0] = null;
                 checkClickables();
             }
@@ -169,6 +176,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void undo(View v){
         undo.undo();
+        updateTop();
+        checkClickables();
     }
 
     public void checkClickables(){

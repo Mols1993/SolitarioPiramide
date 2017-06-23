@@ -14,17 +14,18 @@ import java.util.Stack;
 public class UndoStack {
     Stack<Movement> moveStack;
     Stack<Card> deckPileStack;
-    List<Card> deck;
+    Deck deck;
     Card[][] board;
     Context context;
     int width;
 
-    public UndoStack(Card[][] b, Stack<Card> p, List<Card> d, int w){
+    public UndoStack(Card[][] b, Stack<Card> p, Deck d, int w,Context c){
         moveStack = new Stack<Movement>();
         board = b;
         deckPileStack = p;
         deck = d;
         width = w;
+        context = c;
     }
 
     public void draw(){
@@ -40,15 +41,18 @@ public class UndoStack {
             Movement m = moveStack.pop();
             if(m.draw){
                 //cuando se esté implementado el mazo y la pila.
-                deck.add(deckPileStack.pop());
+                deck.currentCard--;
+                deckPileStack.pop();
             }
             else{
                 int[] laPilaPos = {-1,-1};
-                if (m.pos1 != laPilaPos) {
+                if (m.pos1[0]!=-1 && m.pos1[1]!=-1) {
                     board[m.pos1[0]][m.pos1[1]].setVisibility(View.VISIBLE);
+                    board[m.pos1[0]][m.pos1[1]].clickable(true);
                     if(m.num1!=13){
-                        if(m.pos2 != laPilaPos){
+                        if(m.pos2[0]!=-1 && m.pos2[1]!=-1){
                             board[m.pos2[0]][m.pos2[1]].setVisibility(View.VISIBLE);
+                            board[m.pos2[0]][m.pos2[1]].clickable(true);
                         }
                         else{
                             deckPileStack.push(new Card(context,width,m.num2,m.type2));
@@ -60,6 +64,7 @@ public class UndoStack {
                     deckPileStack.push(new Card(context,width,m.num1,m.type1));
                     if(m.num1!=13){
                         board[m.pos2[0]][m.pos2[1]].setVisibility(View.VISIBLE);
+                        board[m.pos2[0]][m.pos2[1]].clickable(true);
                     }
                 }
             }
