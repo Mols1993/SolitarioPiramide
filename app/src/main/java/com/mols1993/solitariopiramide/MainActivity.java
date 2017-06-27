@@ -249,10 +249,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkClickables(){
-        if(checkWin()){
-            txt.setText("Pirámide Completada!");
-            chronoTrigger.stop();
-        }
         for(int i = 0; i < 7; i++){
             for(int j = 0; j < 7; j++){
                 if(board[i][j] != null){
@@ -279,6 +275,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
+        }
+        if(checkWin()){
+            txt.setText("Pirámide Completada!");
+            chronoTrigger.stop();
         }
     }
 
