@@ -3,16 +3,23 @@ package com.mols1993.solitariopiramide;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Debug;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ButtonBarLayout;
+import android.text.Layout;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Chronometer;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -28,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     Card deckPileTop;
     UndoStack undo;
     TextView txt;
+    Deck d;
+    AlertDialog alert;
+    Chronometer chronoTrigger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +52,14 @@ public class MainActivity extends AppCompatActivity {
         int height = s.y;
         Log.i("Width", String.valueOf(width));
 
+        chronoTrigger = (Chronometer) findViewById(R.id.chronoTrigger);
+        chronoTrigger.start();
+
+        Switch nintendoSwitch = (Switch) findViewById(R.id.switchCardBG);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(R.layout.popup);
+        alert = builder.create();
 
         List<String> cardList = new ArrayList<>();
         List<Card> deck = new ArrayList<>();
@@ -94,7 +112,19 @@ public class MainActivity extends AppCompatActivity {
 
         remainingDeck = deck.subList(counter, deck.size());
 
-        Deck d = new Deck(this, "cards/BA.png", width/7, remainingDeck);
+        d = new Deck(this, "cards/BA.png", width/7, remainingDeck);
+
+        nintendoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    d.setBG("cards/BR.png");
+                }
+                else{
+                    d.setBG("cards/BA.png");
+                }
+            }
+        });
 
         undo = new UndoStack(board, deckPileStack, d, width/7,this);
 
@@ -124,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
         ll.addView(btn);
 
         txt = new TextView(this);
-        txt.setText("asdasd");
         ll.addView(txt);
 
         mainLayout.addView(ll);
@@ -221,7 +250,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void checkClickables(){
         if(checkWin()){
-            //TODO algo para indicar que ganó
+            txt.setText("Pirámide Completada!");
+            chronoTrigger.stop();
         }
         for(int i = 0; i < 7; i++){
             for(int j = 0; j < 7; j++){
@@ -250,5 +280,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    public void instrucciones(View v){
+        alert.show();
     }
 }

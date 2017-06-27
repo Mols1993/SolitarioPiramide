@@ -23,7 +23,36 @@
             android:layout_gravity="center"
             android:orientation="vertical"
             tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp"></LinearLayout>
+            tools:layout_editor_absoluteY="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Switch
+                    android:id="@+id/switchCardBG"
+                    android:layout_width="149dp"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="Color de Cartas" />
+
+                <Chronometer
+                    android:id="@+id/chronoTrigger"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="instrucciones"
+                    android:text="Instrucciones" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 

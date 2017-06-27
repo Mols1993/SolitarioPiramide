@@ -34,6 +34,9 @@ public class Deck extends android.support.v7.widget.AppCompatImageButton{
         setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                if(currentCard < 0){
+                    currentCard = 0;
+                }
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
                     main.drawCard(deckList.get(currentCard));
                     currentCard++;
@@ -44,5 +47,14 @@ public class Deck extends android.support.v7.widget.AppCompatImageButton{
                 return false;
             }
         });
+    }
+
+    public void setBG(String fileName){
+        try {
+            Drawable d = Drawable.createFromStream(main.getAssets().open(fileName), null);
+            setBackground(d);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
